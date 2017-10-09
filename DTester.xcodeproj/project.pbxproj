@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3FC2216C1F8BF9500015C42F /* HTTPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC2216B1F8BF9500015C42F /* HTTPManager.swift */; };
 		3FC7C6DB1F8BF6470044FF8A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC7C6DA1F8BF6470044FF8A /* AppDelegate.swift */; };
-		3FC7C6DD1F8BF6470044FF8A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC7C6DC1F8BF6470044FF8A /* ViewController.swift */; };
+		3FC7C6DD1F8BF6470044FF8A /* AuthenticationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC7C6DC1F8BF6470044FF8A /* AuthenticationVC.swift */; };
 		3FC7C6E01F8BF6470044FF8A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FC7C6DE1F8BF6470044FF8A /* Main.storyboard */; };
 		3FC7C6E31F8BF6470044FF8A /* DTester.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3FC7C6E11F8BF6470044FF8A /* DTester.xcdatamodeld */; };
 		3FC7C6E51F8BF6470044FF8A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FC7C6E41F8BF6470044FF8A /* Assets.xcassets */; };
@@ -17,9 +18,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3FC2216B1F8BF9500015C42F /* HTTPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPManager.swift; sourceTree = "<group>"; };
 		3FC7C6D71F8BF6470044FF8A /* DTester.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DTester.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FC7C6DA1F8BF6470044FF8A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3FC7C6DC1F8BF6470044FF8A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		3FC7C6DC1F8BF6470044FF8A /* AuthenticationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationVC.swift; sourceTree = "<group>"; };
 		3FC7C6DF1F8BF6470044FF8A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3FC7C6E21F8BF6470044FF8A /* DTester.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DTester.xcdatamodel; sourceTree = "<group>"; };
 		3FC7C6E41F8BF6470044FF8A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -42,6 +44,49 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3FC221641F8BF80B0015C42F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3FC7C6E11F8BF6470044FF8A /* DTester.xcdatamodeld */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		3FC221651F8BF8180015C42F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3FC7C6E61F8BF6470044FF8A /* LaunchScreen.storyboard */,
+				3FC7C6DE1F8BF6470044FF8A /* Main.storyboard */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		3FC221661F8BF8200015C42F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				3FC7C6DA1F8BF6470044FF8A /* AppDelegate.swift */,
+				3FC7C6DC1F8BF6470044FF8A /* AuthenticationVC.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		3FC221671F8BF8450015C42F /* Supporting files */ = {
+			isa = PBXGroup;
+			children = (
+				3FC7C6E41F8BF6470044FF8A /* Assets.xcassets */,
+				3FC7C6E91F8BF6470044FF8A /* Info.plist */,
+			);
+			name = "Supporting files";
+			sourceTree = "<group>";
+		};
+		3FC221681F8BF8500015C42F /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				3FC2216B1F8BF9500015C42F /* HTTPManager.swift */,
+			);
+			name = Network;
+			sourceTree = "<group>";
+		};
 		3FC7C6CE1F8BF6470044FF8A = {
 			isa = PBXGroup;
 			children = (
@@ -63,13 +108,11 @@
 		3FC7C6D91F8BF6470044FF8A /* DTester */ = {
 			isa = PBXGroup;
 			children = (
-				3FC7C6DA1F8BF6470044FF8A /* AppDelegate.swift */,
-				3FC7C6DC1F8BF6470044FF8A /* ViewController.swift */,
-				3FC7C6DE1F8BF6470044FF8A /* Main.storyboard */,
-				3FC7C6E41F8BF6470044FF8A /* Assets.xcassets */,
-				3FC7C6E61F8BF6470044FF8A /* LaunchScreen.storyboard */,
-				3FC7C6E91F8BF6470044FF8A /* Info.plist */,
-				3FC7C6E11F8BF6470044FF8A /* DTester.xcdatamodeld */,
+				3FC221661F8BF8200015C42F /* Controller */,
+				3FC221651F8BF8180015C42F /* View */,
+				3FC221641F8BF80B0015C42F /* Model */,
+				3FC221681F8BF8500015C42F /* Network */,
+				3FC221671F8BF8450015C42F /* Supporting files */,
 			);
 			path = DTester;
 			sourceTree = "<group>";
@@ -218,8 +261,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FC7C6E31F8BF6470044FF8A /* DTester.xcdatamodeld in Sources */,
-				3FC7C6DD1F8BF6470044FF8A /* ViewController.swift in Sources */,
+				3FC7C6DD1F8BF6470044FF8A /* AuthenticationVC.swift in Sources */,
 				3FC7C6DB1F8BF6470044FF8A /* AppDelegate.swift in Sources */,
+				3FC2216C1F8BF9500015C42F /* HTTPManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
