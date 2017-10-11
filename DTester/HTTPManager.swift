@@ -13,32 +13,49 @@ class HTTPManager {
     let urlLogIn = "/login/index"
     let urlLogOut = "/login/logout"
     
-    func post(username: String, password:String) {
+    struct User: Decodable {
+        var id: String
+        var username: String
+        var roles: [String]
+        
+        init(json: [String: Any]) {
+            id = json["id"] as? String ?? "-1"
+            username = json["username"] as? String ?? ""
+            roles = json["roles"] as? [String] ?? [""]
+        }
+    }
+    
+    func post(username: String, password:String) -> User {
         //post
         //        let parameters = ["username":"admin","password":"dtapi_admin"]
         let parameters = ["username":username,"password":password]
         
+        var uzver = User.init(json: ["username":"LOH"])
+        
         var request = URLRequest(url: URL(string: url + urlLogIn)!)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else { return }
+        let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
         request.httpBody = httpBody
         
         let sessionPost = URLSession.shared
         sessionPost.dataTask(with: request) { (data, response, error) in
             if let response = response {
-                print(response)
+//                print("\n\nResponse",response)
             }
             
-            if let data = data {
+            guard let data = data else { return }
                 do {
-                    let json = try JSONSerialization.jsonObject(with: data, options: [])
-                    print(json)
+//                    let json = try JSONSerialization.jsonObject(with: data, options: [])
+//                    print("DATA",json)
+//                    How to return to main thread!!!!
+                    uzver = try JSONDecoder().decode(User.self, from: data)
+                    print(uzver)
                 } catch {
                     print(error)
                 }
-            }
             }.resume()
+        return uzver
     }
     
     func get() {

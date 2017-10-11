@@ -13,6 +13,8 @@ class AuthenticationVC: UIViewController {
     @IBOutlet weak var userNameTF: UITextField!
     @IBOutlet weak var passwordTF: UITextField!
     
+    @IBOutlet weak var logInLB: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -20,8 +22,8 @@ class AuthenticationVC: UIViewController {
 
     @IBAction func logInBtn(_ sender: Any) {
         let query = HTTPManager()
-        query.post(username: userNameTF.text!, password: passwordTF.text!)
-        
+        let user = query.post(username: userNameTF.text!, password: passwordTF.text!)
+        logInLB.text = user.username
     }
     
     @IBAction func logOutBtn(_ sender: Any) {
