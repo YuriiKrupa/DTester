@@ -13,7 +13,7 @@ class AuthenticationVC: UIViewController {
     @IBOutlet weak var userNameTF: UITextField!
     @IBOutlet weak var passwordTF: UITextField!
     
-    @IBOutlet weak var logInLB: UILabel!
+    @IBOutlet weak var logInLB: UILabel! //Just for debug
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,18 +21,29 @@ class AuthenticationVC: UIViewController {
     }
 
     @IBAction func logInBtn(_ sender: Any) {
-        let query = HTTPManager()
-        let user = query.post(username: userNameTF.text!, password: passwordTF.text!)
-        logInLB.text = user.username
+//        let query = HTTPManager()
+//        query.post(username: userNameTF.text!, password: passwordTF.text!)
+//        query.post(username: userNameTF.text!, password: passwordTF.text!) { (user, cookie) in
+        HTTPManager().post(username: userNameTF.text!, password: passwordTF.text!) { (user, cookie) in
+            if user.id == "-1" {
+                self.showWarningMsg("ALARM")
+            } else {
+//                self.performSegue(withIdentifier: "granted", sender: (loginResponse, cookieResponse))
+                self.logInLB.text = user.username
+                HTTPManager().getFaculties()
+            }
+        }
     }
     
-    @IBAction func logOutBtn(_ sender: Any) {
-        let query = HTTPManager()
-        query.get()
-        
+    @IBAction func logOutBtn(_ sender: Any) { //BTN FIRE
+        HTTPManager().userLogout()
     }
     
-    
+    private func showWarningMsg(_ textMsg: String) {
+        let alert = UIAlertController(title: "Warning!", message: textMsg, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
