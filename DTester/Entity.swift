@@ -21,4 +21,15 @@ class Entity {
             faculty_description = json["faculty_description"] as? String ?? ""
         }
     }
+    struct User: Decodable {
+        var id: String
+        var username: String
+        var roles: [String]
+        
+        init(json: [String: Any]) {
+            id = json["id"] as? String ?? "-1"
+            username = json["username"] as? String ?? ""
+            roles = json["roles"] as? [String] ?? [""]
+        }
+    }
 }

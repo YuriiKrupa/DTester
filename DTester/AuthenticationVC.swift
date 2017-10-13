@@ -15,6 +15,8 @@ class AuthenticationVC: UIViewController {
     
     @IBOutlet weak var logInLB: UILabel! //Just for debug
     
+//    let dataManager = DataManager.dataManager
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -30,13 +32,21 @@ class AuthenticationVC: UIViewController {
             } else {
 //                self.performSegue(withIdentifier: "granted", sender: (loginResponse, cookieResponse))
                 self.logInLB.text = user.username
-                HTTPManager().getFaculties()
+                print("\nCOOKIE MAIN",cookie,"\n\n")
+                HTTPManager().getFaculties(cookie)
+//                self.dataManager.save(user.username, cookie)
+                UserDefaults.standard.set(user.username, forKey: "username")
+                //UserDefaults.standard.set(cookie, forKey: "cookie")
             }
         }
     }
     
     @IBAction func logOutBtn(_ sender: Any) { //BTN FIRE
         HTTPManager().userLogout()
+//        UserDefaults.standard.removeObject(forKey: <#T##String#>)
+        print("USERNAME: ",UserDefaults.standard.string(forKey: "username"))
+        print("Cookie: ", UserDefaults.standard.string(forKey: "cookie"))
+        //HTTPManager().getFaculties((UserDefaults.standard.string(forKey: "cookie")!).)
     }
     
     private func showWarningMsg(_ textMsg: String) {

@@ -13,22 +13,20 @@ class HTTPManager {
     let urlToHost = "vps9615.hyperhost.name"
     let urlUserLogIn = "/login/index"
     let urlUserLogOut = "/login/logout"
-//    GET/ http://<host>/<entity>/getRecords
     let urlFaculties = "/faculty/getRecords"
     
-    struct User: Decodable {
-        var id: String
-        var username: String
-        var roles: [String]
-        
-        init(json: [String: Any]) {
-            id = json["id"] as? String ?? "-1"
-            username = json["username"] as? String ?? ""
-            roles = json["roles"] as? [String] ?? [""]
-        }
+    static func cooikiesGetter(_ hostUrl: String) -> [HTTPCookie] {
+        let cookies:[HTTPCookie] = HTTPCookieStorage.shared.cookies! as [HTTPCookie]
+//        for cookie:HTTPCookie in cookies as [HTTPCookie] {
+//            if cookie.domain == hostUrl {
+////                return cookie
+//            }
+//        }
+        return cookies
     }
     
-    func post(username: String, password:String, completionHandler: @escaping (_ responseUser: User, _ cookieVal: String) -> ()) {
+    func post(username: String, password:String, completionHandler: @escaping (_ responseUser: Entity.User, _ cookieVal: [HTTPCookie]) -> ()) {
+        
         let parameters = ["username":username,"password":password]
         
         var request = URLRequest(url: URL(string: urlProtocol + urlToHost + urlUserLogIn)!)
@@ -38,6 +36,7 @@ class HTTPManager {
         
         let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
         request.httpBody = httpBody
+        
         
         let sessionPost = URLSession.shared
         sessionPost.dataTask(with: request) { (data, response, error) in
@@ -50,35 +49,29 @@ class HTTPManager {
                 
                 guard let data = data else { return }
                 do {
-                    let user = try JSONDecoder().decode(User.self, from: data)
+                    let user = try JSONDecoder().decode(Entity.User.self, from: data)
                     DispatchQueue.main.async {
-                        completionHandler(user, "response")
+                        completionHandler(user, HTTPManager.cooikiesGetter(self.urlToHost))
                     }
                     
                 } catch {
                     print(error)
                 }
                 
-                var cookies:[HTTPCookie] = HTTPCookieStorage.shared.cookies! as [HTTPCookie]
-                print("Cookies Count = \(cookies.count)")
-                for cookie:HTTPCookie in cookies as [HTTPCookie] {
-                    print("\n\n",cookie.domain,"HOST",self.urlToHost)
-                    if cookie.domain == self.urlToHost {
-                        let cookieValue = cookie.value
-                        //FIXME: !!!HERE RETURN COOKIE
-                        print("\n")
-                        print(cookie.value,"\n", cookieValue)
-                        print("\n")
-                    }
-                }                
             }
-            }.resume()
+        }.resume()
     }
     
-    func getFaculties() {
+    func getFaculties(_ cookie: [HTTPCookie]) {
 //        GET/ http://<host>/<entity>/getRecords
+        let request = URLRequest(url: URL(string: urlProtocol + urlToHost + urlFaculties)!)
+//        request.addValue("Set-Cookie", forHTTPHeaderField: cookie.value)
+        //request.allHTTPHeaderFields = HTTPCookie.requestHeaderFields(with: cookie)
+        print(cookie.first)
+        //request.addValue("Set-Cookie", forHTTPHeaderField: (cookie.first?.value)!)
+        
         let sessionGet = URLSession.shared
-        sessionGet.dataTask(with: URL(string: urlProtocol + urlToHost + urlFaculties)!) { (data, response, error) in
+        sessionGet.dataTask(with: request) { (data, response, error) in
             
             if let error = error {
                 print(error)
@@ -89,8 +82,11 @@ class HTTPManager {
                 
                 guard let data = data else { return }
                 do {
+                    
+                    //FIXME: fake decoding of json
                     let faculties = try JSONDecoder().decode(Entity.Faculty.self, from: data)
                     print(faculties)
+                    print(String(data: data, encoding: .utf8))
                 } catch {
                     print(error)
                 }
@@ -131,7 +127,7 @@ class HTTPManager {
                 }
                 
             }
-            }.resume()
+        }.resume()
     }
     
 }
