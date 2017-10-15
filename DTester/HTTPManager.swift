@@ -40,11 +40,14 @@ class HTTPManager {
         
         let sessionPost = URLSession.shared
         sessionPost.dataTask(with: request) { (data, response, error) in
-            if let error = error {
-                print("ERROR: \(error)")
+            if let errorr = error {
+                
+                print("\nERROR: \(errorr)\n")
             } else {
-                if let response = response {
-                    print("\n\nResponse",response)
+                if let httpResponse = response as? HTTPURLResponse {
+                    print(httpResponse.statusCode)
+                    
+                    print("\n\nResponse", httpResponse)
                 }
                 
                 guard let data = data else { return }
@@ -62,13 +65,15 @@ class HTTPManager {
         }.resume()
     }
     
-    func getFaculties(_ cookie: [HTTPCookie]) {
+    func getFaculties(_ cookieValue: String) {
 //        GET/ http://<host>/<entity>/getRecords
-        let request = URLRequest(url: URL(string: urlProtocol + urlToHost + urlFaculties)!)
-//        request.addValue("Set-Cookie", forHTTPHeaderField: cookie.value)
-        //request.allHTTPHeaderFields = HTTPCookie.requestHeaderFields(with: cookie)
-        print(cookie.first)
-        //request.addValue("Set-Cookie", forHTTPHeaderField: (cookie.first?.value)!)
+
+        var request = URLRequest(url: URL(string: urlProtocol + urlToHost + urlFaculties)!)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("UTF-8", forHTTPHeaderField: "Charset")
+        request.setValue("session=\(cookieValue)", forHTTPHeaderField: "Cookie")
+
         
         let sessionGet = URLSession.shared
         sessionGet.dataTask(with: request) { (data, response, error) in
@@ -85,8 +90,9 @@ class HTTPManager {
                     
                     //FIXME: fake decoding of json
                     let faculties = try JSONDecoder().decode(Entity.Faculty.self, from: data)
-                    print(faculties)
-                    print(String(data: data, encoding: .utf8))
+//                    print(faculties)
+//                    print(String(data: data, encoding: .utf8))
+                    print(data)
                 } catch {
                     print(error)
                 }

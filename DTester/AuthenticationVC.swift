@@ -33,20 +33,26 @@ class AuthenticationVC: UIViewController {
 //                self.performSegue(withIdentifier: "granted", sender: (loginResponse, cookieResponse))
                 self.logInLB.text = user.username
                 print("\nCOOKIE MAIN",cookie,"\n\n")
-                HTTPManager().getFaculties(cookie)
-//                self.dataManager.save(user.username, cookie)
-                UserDefaults.standard.set(user.username, forKey: "username")
+//                HTTPManager().getFaculties(cookie)
+//                UserDefaults.standard.set(cookie, forKey: "cookie")
+                UserDefaults.standard.set((cookie.first?.value)!, forKey: "cookieValue")
+                UserDefaults.standard.set(true, forKey: "isLogIn")
+//                UserDefaults.standard.set(user.username, forKey: "username")
+                UserDefaults.standard.synchronize()
+                
                 //UserDefaults.standard.set(cookie, forKey: "cookie")
             }
         }
     }
     
     @IBAction func logOutBtn(_ sender: Any) { //BTN FIRE
-        HTTPManager().userLogout()
+//        if UserDefaults.standard.bool(forKey: "isLogIn") == true { HTTPManager().getFaculties(cook: UserDefaults.standard.value(forKey: "cookieValue") as? String)}
+        //        HTTPManager().userLogout()
 //        UserDefaults.standard.removeObject(forKey: <#T##String#>)
-        print("USERNAME: ",UserDefaults.standard.string(forKey: "username"))
-        print("Cookie: ", UserDefaults.standard.string(forKey: "cookie"))
-        //HTTPManager().getFaculties((UserDefaults.standard.string(forKey: "cookie")!).)
+//        print("USERNAME: ",UserDefaults.standard.string(forKey: "username"))
+//        print("Cookie: ", UserDefaults.standard.string(forKey: "cookie"))
+        HTTPManager().getFaculties(UserDefaults.standard.string(forKey: "cookieValue")!)
+        
     }
     
     private func showWarningMsg(_ textMsg: String) {
